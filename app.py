@@ -8,7 +8,7 @@ from flask_cors import CORS  # NEW: Required for browser-to-server communication
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 # Configuration
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
@@ -28,7 +28,7 @@ def get_s3_client():
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
         config=Config(signature_version='s3v4')
     )
-
+    
 @app.route("/")
 def health():
     return "Backend is running 🚀"
