@@ -12,16 +12,16 @@ if os.path.exists(".env"):
 app = Flask(__name__)
 CORS(app)
 
+# Configuration
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+BUCKET_NAME = os.getenv("BUCKET_NAME", "test-bucket-experiment-speech")
+
+if not AWS_ACCESS_KEY_ID or not AWS_SECRET_ACCESS_KEY:
+        raise ValueError("AWS credentials not found in environment variables!")
 
 def get_s3_client():
-    # Configuration
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
-    BUCKET_NAME = os.getenv("BUCKET_NAME", "test-bucket-experiment-speech")
-
-    if not AWS_ACCESS_KEY_ID or not AWS_SECRET_ACCESS_KEY:
-        raise ValueError("AWS credentials not found in environment variables!")
 
     return boto3.client(
         "s3",
