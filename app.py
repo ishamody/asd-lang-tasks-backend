@@ -8,32 +8,39 @@ from flask_cors import CORS  # NEW: Required for browser-to-server communication
 if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
-    
+
 app = Flask(__name__)
 CORS(app)
 
-# Configuration
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
-BUCKET_NAME = os.getenv("BUCKET_NAME", "test-bucket-experiment-speech")
-
-if not AWS_ACCESS_KEY_ID or not AWS_SECRET_ACCESS_KEY:
-    raise ValueError("AWS credentials not found in environment variables!")
-
 def get_s3_client():
-    """Configures S3 client with SigV4 for us-east-2 compatibility."""
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+    if not AWS_ACCESS_KEY_ID or not AWS_SECRET_ACCESS_KEY:
+        raise ValueError("AWS credentials not found in environment variables!")
+    
     return boto3.client(
         "s3",
         region_name=AWS_REGION,
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        config=Config(signature_version='s3v4')
+        config=Config(signature_version="s3v4")
     )
+
     
 @app.route("/")
 def health():
     return "Backend is running 🚀"
+
+@app.route("/ping")
+def ping():
+    return jsonify({
+        "AWS_ACCESS_KEY_ID": bool(os.getenv("AWS_ACCESS_KEY_ID")),
+        "AWS_SECRET_ACCESS_KEY": bool(os.getenv("AWS_SECRET_ACCESS_KEY")),
+        "AWS_REGION": os.getenv("AWS_REGION"),
+        "BUCKET_NAME": os.getenv("BUCKET_NAME")
+    })
+
 
 @app.route("/get-presigned-url", methods=["POST"])
 def get_presigned_url():
