@@ -2,6 +2,5 @@ Flask
 flask-cors
 boto3
 requests
-python-dotenv
 botocore
 gunicorn

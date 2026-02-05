@@ -1,12 +1,14 @@
 import os
-from dotenv import load_dotenv
 import boto3
 import requests
 from botocore.config import Config
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # NEW: Required for browser-to-server communication
 
-load_dotenv()
+if os.path.exists(".env"):
+    from dotenv import load_dotenv
+    load_dotenv()
+    
 app = Flask(__name__)
 CORS(app)
 
