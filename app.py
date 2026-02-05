@@ -112,11 +112,10 @@
 
 import sys, os, time
 from flask import Flask
-print(f"Starting app PID={os.getpid()}...", file=sys.stderr)
 sys.stderr.flush()
-time.sleep(300)
 
 app = Flask(__name__)
+print(f"Starting app PID={os.getpid()}...", file=sys.stderr)
 
 @app.route("/")
 def health():
