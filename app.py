@@ -29,6 +29,10 @@ def get_s3_client():
         config=Config(signature_version='s3v4')
     )
 
+@app.route("/")
+def health():
+    return "Backend is running 🚀"
+
 @app.route("/get-presigned-url", methods=["POST"])
 def get_presigned_url():
     """
