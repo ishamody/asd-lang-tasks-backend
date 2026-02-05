@@ -110,9 +110,11 @@
 # #     port = int(os.environ.get("PORT", 5000))
 # #     app.run(host="0.0.0.0", port=port)
 
-import os
-import time
+import sys, os, time
 from flask import Flask
+print(f"Starting app PID={os.getpid()}...", file=sys.stderr)
+sys.stderr.flush()
+time.sleep(300)
 
 app = Flask(__name__)
 
