@@ -1,3 +1,5 @@
+import time
+time.sleep(300)
 import os
 import boto3
 import requests
