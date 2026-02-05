@@ -115,7 +115,7 @@ from flask import Flask
 sys.stderr.flush()
 
 app = Flask(__name__)
-print(f"Starting app PID={os.getpid()}...", file=sys.stderr)
+print("PID:", os.getpid(), "PPID:", os.getppid())
 
 @app.route("/")
 def health():
